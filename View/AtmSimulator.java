@@ -6,21 +6,16 @@ import javax.swing.*;
 import Controller.ButtonClickListener;
 import Model.ATM;
 
-import java.util.Random;
-
 public class AtmSimulator {
 
-	private Random rand = new Random();
-	private double x = rand.nextInt(1500) + 0;
-	private ATM atm = new ATM(x);
+	private ATM atm = new ATM(0.00);
 	private JFrame window;
 
-	private JTextArea textArea = new JTextArea("Balance is: $" + atm.getBalance());
+	private JTextArea textArea = new JTextArea("Balance: $" + atm.getBalance());
 
 	private JButton deposit = new JButton("Deposit");
 	private JButton withdraw = new JButton("Withdraw");
 	private JButton exit = new JButton("Exit");
-	//private JButton[] numPad = new JButton[9];
 
 	public AtmSimulator(JFrame window) {
 		this.window = window;
@@ -53,10 +48,18 @@ public class AtmSimulator {
 		row3.add(exit);
 		mainPanel.add(row3);
 
-		ButtonClickListener buttonClickListener = new ButtonClickListener(this);
-		deposit.addActionListener(buttonClickListener);
-		withdraw.addActionListener(buttonClickListener);
-		exit.addActionListener(buttonClickListener);
+		ButtonClickListener bcl = new ButtonClickListener(this);
+		deposit.addActionListener(bcl);
+		withdraw.addActionListener(bcl);
+	
+		exit.addActionListener(e -> {
+			window.getContentPane().removeAll();
+			var menu = new MenuScreen(window);
+			menu.start();
+			window.pack();
+			window.revalidate();
+		});
+
 	}
 
 	public JButton getDButton() {
