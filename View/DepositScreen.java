@@ -1,11 +1,16 @@
 package View;
 
 import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
 
-public class DepositScreen {
+import Model.ATM;
+
+public class DepositScreen implements ActionListener {
 
 	private JFrame window;
+	private ATM atm = new ATM(0.0);
+	private JTextArea textArea = new JTextArea("Balance: $" + atm.getBalance());
 	private JButton zero = new JButton("0");
 	private JButton one = new JButton("1");
 	private JButton two = new JButton("2");
@@ -16,8 +21,11 @@ public class DepositScreen {
 	private JButton seven = new JButton("7");
 	private JButton eight = new JButton("8");
 	private JButton nine = new JButton("9");
+	private JButton mainMenu = new JButton("Main Menu");
+	private JButton deposit = new JButton("DEPOSIT");
+	private JButton clear = new JButton("c");
 	private JTextArea message = new JTextArea("Enter amount to deposit: $");
-	private JTextField numField = new JTextField(10);
+	private JTextField numField = new JTextField(8);
 
 	public DepositScreen(JFrame window) {
 		this.window = window;
@@ -30,10 +38,29 @@ public class DepositScreen {
 			JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setPreferredSize(new Dimension(500, 375));
 		cp.add(BorderLayout.CENTER, scrollPane);
+		deposit.setToolTipText("Deposit any amount!");
+		numField.setEditable(false);
+		numField.setToolTipText("Can only input from buttons.");
+		cp.add(BorderLayout.NORTH, textArea);
+
+		JPanel functs = new JPanel();
+		cp.add(BorderLayout.EAST, functs);
+		functs.setLayout(new GridLayout(3, 1));
+
+		JPanel depRow = new JPanel();
+		depRow.add(deposit);
+		functs.add(depRow);
+
+		JPanel exitRow = new JPanel();
+		exitRow.add(mainMenu);
+		functs.add(exitRow);
+
+		JPanel clearRow = new JPanel();
+		clearRow.add(clear);
+		functs.add(clearRow);
 
 		JPanel numberArea = new JPanel();
-		cp.add(BorderLayout.SOUTH, numberArea);
-
+		cp.add(BorderLayout.CENTER, numberArea);
 		numberArea.setLayout(new GridLayout(5, 3));
 
 		JPanel row1 = new JPanel();
@@ -63,15 +90,61 @@ public class DepositScreen {
 		row4.add(zero);
 		numberArea.add(row5);
 
-		// atmButton.setToolTipText("Deposit any amount!");
-		// panel.add(atmButton);
+		zero.addActionListener(this);
+		one.addActionListener(this);
+		two.addActionListener(this);
+		three.addActionListener(this);
+		four.addActionListener(this);
+		five.addActionListener(this);
+		six.addActionListener(this);
+		seven.addActionListener(this);
+		eight.addActionListener(this);
+		nine.addActionListener(this);
+		mainMenu.addActionListener(this);
+		deposit.addActionListener(this);
+		clear.addActionListener(this);
 
-		// atm.addActionListener( e -> {
-		// 	window.getContentPane().removeAll();
-		// 	var atm = new AtmSimulator(window);
-		// 	atm.start();
-		// 	window.pack();
-		// 	window.revalidate();
-		// });
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		String numbers = numField.getText();
+
+		if (e.getSource() == zero) {
+			numField.setText(numbers + "0" );
+		} else if (e.getSource() == one) {
+			numField.setText(numbers + "1" );
+		} else if (e.getSource() == two) {
+			numField.setText(numbers + "2" );
+		} else if (e.getSource() == three) {
+			numField.setText(numbers + "3" );
+		} else if (e.getSource() == four) {
+			numField.setText(numbers + "4" );
+		} else if (e.getSource() == five) {
+			numField.setText(numbers + "5" );
+		} else if (e.getSource() == six) {
+			numField.setText(numbers + "6" );
+		} else if (e.getSource() == seven) {
+			numField.setText(numbers + "7" );
+		} else if (e.getSource() == eight) {
+			numField.setText(numbers + "8" );
+		} else if (e.getSource() == nine) {
+			numField.setText(numbers + "9" );
+		} else if (e.getSource() == clear) {
+			numField.setText("");
+
+		} else if (e.getSource() == deposit) {
+			double newAmount = Double.parseDouble(numbers); 
+			atm.deposit(newAmount);
+			numField.setText("");
+			textArea.setText("Deposited: $" + newAmount);
+			
+		} else if (e.getSource() == mainMenu) {
+			window.getContentPane().removeAll();
+			var mainMenu = new AtmSimulator(window);
+			mainMenu.start();
+			window.pack();
+			window.revalidate();
+		}
 	}
 }

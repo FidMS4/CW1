@@ -11,7 +11,7 @@ public class ATM {
 
 	public void deposit(double dep) {
 		balance += dep;
-		//balance -= FEE; //FREE TO DEPOSIT?
+
 	}
 
 	public void withdraw(double wit) {
@@ -24,7 +24,5 @@ public class ATM {
 	public double getBalance() {
 		return balance;
 	}
-
-
 
 }

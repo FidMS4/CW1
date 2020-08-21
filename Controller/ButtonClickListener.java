@@ -5,6 +5,7 @@ import javax.swing.*;
 
 import View.AtmSimulator;
 import View.DepositScreen;
+import View.WithdrawScreen;
 
 public class ButtonClickListener implements ActionListener {
 
@@ -17,7 +18,6 @@ public class ButtonClickListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		var button = e.getSource();
-		String m = panel.getDisplay().getText();
 
 		if (button == panel.getDButton()) { 
 			JFrame window = panel.getWindow();
@@ -31,8 +31,8 @@ public class ButtonClickListener implements ActionListener {
 		} else if (button == panel.getWButton()) {
 			JFrame window = panel.getWindow();
 			window.getContentPane().removeAll();
-			// var withdrawMenu = new WithdrawScreen(window);
-			// withdrawMenu.start();
+			var withdrawMenu = new WithdrawScreen(window);
+			withdrawMenu.start();
 			window.pack();
 			window.revalidate();
 		} 
