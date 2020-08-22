@@ -85,7 +85,7 @@ public class WithdrawScreen implements ActionListener {
 		numberArea.add(row4);
 
 		JPanel row5 = new JPanel();
-		row4.add(zero);
+		row5.add(zero);
 		numberArea.add(row5);
 
 		zero.addActionListener(this);
