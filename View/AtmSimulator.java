@@ -8,7 +8,8 @@ import Model.ATM;
 
 public class AtmSimulator {
 
-	private ATM atm = new ATM(0.0);
+	public static ATM atm = new ATM();
+	public static double balance = atm.getBalance();
 	private JFrame window;
 	private JTextArea textArea = new JTextArea("Balance: $" + atm.getBalance());
 	private JButton deposit = new JButton("Deposit");
@@ -34,6 +35,7 @@ public class AtmSimulator {
 
 		//first screen
 		JPanel row1 = new JPanel();
+		row1.setPreferredSize(new Dimension(100, 50));
 		row1.add(textArea);
 		mainPanel.add(row1);
 
@@ -74,6 +76,6 @@ public class AtmSimulator {
 
 	public ATM getATM() {
 		return atm;
-	} 
+	}
 
 }

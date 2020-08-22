@@ -4,13 +4,10 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-import Model.ATM;
-
-public class DepositScreen implements ActionListener {
-
+public class DepositScreen implements ActionListener  {
+	
 	private JFrame window;
-	private ATM atm = new ATM(0.0);
-	private JTextArea textArea = new JTextArea("Balance: $" + atm.getBalance());
+	private JTextArea textArea = new JTextArea("Balance: $" + AtmSimulator.atm.getBalance());
 	private JButton zero = new JButton("0");
 	private JButton one = new JButton("1");
 	private JButton two = new JButton("2");
@@ -25,7 +22,7 @@ public class DepositScreen implements ActionListener {
 	private JButton deposit = new JButton("DEPOSIT");
 	private JButton clear = new JButton("c");
 	private JTextArea message = new JTextArea("Enter amount to deposit: $");
-	private JTextField numField = new JTextField(8);
+	private JTextField numField = new JTextField(10);
 
 	public DepositScreen(JFrame window) {
 		this.window = window;
@@ -39,6 +36,7 @@ public class DepositScreen implements ActionListener {
 		scrollPane.setPreferredSize(new Dimension(500, 375));
 		cp.add(BorderLayout.CENTER, scrollPane);
 		deposit.setToolTipText("Deposit any amount!");
+		clear.setToolTipText("clear");
 		numField.setEditable(false);
 		numField.setToolTipText("Can only input from buttons.");
 		cp.add(BorderLayout.NORTH, textArea);
@@ -87,7 +85,7 @@ public class DepositScreen implements ActionListener {
 		numberArea.add(row4);
 
 		JPanel row5 = new JPanel();
-		row4.add(zero);
+		row5.add(zero);
 		numberArea.add(row5);
 
 		zero.addActionListener(this);
@@ -134,10 +132,14 @@ public class DepositScreen implements ActionListener {
 			numField.setText("");
 
 		} else if (e.getSource() == deposit) {
-			double newAmount = Double.parseDouble(numbers); 
-			atm.deposit(newAmount);
-			numField.setText("");
-			textArea.setText("Deposited: $" + newAmount);
+			try {
+				double newAmount = Double.parseDouble(numbers); 
+				AtmSimulator.atm.deposit(newAmount);
+				numField.setText("");
+				textArea.setText("Deposited: $" + newAmount);
+			} catch (NumberFormatException exception) {
+				numField.setText("Nothing entered.");
+			}
 			
 		} else if (e.getSource() == mainMenu) {
 			window.getContentPane().removeAll();

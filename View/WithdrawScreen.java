@@ -4,13 +4,10 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-import Model.ATM;
-
 public class WithdrawScreen implements ActionListener {
 	
 	private JFrame window;
-	private ATM atm = new ATM(0.00);
-	private JTextArea textArea = new JTextArea("Balance: $" + atm.getBalance());
+	private JTextArea textArea = new JTextArea("Balance: $" + + AtmSimulator.atm.getBalance());
 	private JButton zero = new JButton("0");
 	private JButton one = new JButton("1");
 	private JButton two = new JButton("2");
@@ -25,7 +22,7 @@ public class WithdrawScreen implements ActionListener {
 	private JButton withdraw = new JButton("WITHDRAW");
 	private JButton clear = new JButton("c");
 	private JTextArea message = new JTextArea("Enter amount to withdraw: $");
-	private JTextField numField = new JTextField(8);
+	private JTextField numField = new JTextField(10);
 
 	public WithdrawScreen(JFrame window) {
 		this.window = window;
@@ -38,7 +35,8 @@ public class WithdrawScreen implements ActionListener {
 			JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setPreferredSize(new Dimension(500, 375));
 		cp.add(BorderLayout.CENTER, scrollPane);
-		withdraw.setToolTipText("Withdraw any amount up to the balance!");
+		withdraw.setToolTipText("Withdraw any amount up to the balance! Past that will be negative.");
+		clear.setToolTipText("clear");
 		numField.setEditable(false);
 		numField.setToolTipText("Can only input from buttons.");
 		cp.add(BorderLayout.NORTH, textArea);
@@ -109,6 +107,7 @@ public class WithdrawScreen implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String numbers = numField.getText();
+
 		if (e.getSource() == zero) {
 			numField.setText(numbers + "0" );
 		} else if (e.getSource() == one) {
@@ -133,15 +132,18 @@ public class WithdrawScreen implements ActionListener {
 			numField.setText("");
 
 		} else if (e.getSource() == withdraw) {
-			double newAmount = Double.parseDouble(numbers); 
-			atm.withdraw(newAmount);
-			numField.setText("");
-			textArea.setText("Withdrawn: $" + newAmount);
+			try {
+				double newAmount = Double.parseDouble(numbers); 
+				AtmSimulator.atm.withdraw(newAmount);
+				numField.setText("");
+				textArea.setText("Withdrawn: $" + newAmount);
+			} catch (NumberFormatException exception) {
+				numField.setText("Nothing entered.");
+			}
 
 		} else if (e.getSource() == mainMenu) {
 			window.getContentPane().removeAll();
 			var mainMenu = new AtmSimulator(window);
-			atm.getBalance();
 			mainMenu.start();
 			window.pack();
 			window.revalidate();
